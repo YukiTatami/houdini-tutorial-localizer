@@ -607,22 +607,6 @@ python md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/ch
 - 技術用語の自動リンク生成
 - シリーズナビゲーション生成
 
-#### 翻訳バッチ処理スクリプト
-**translation_batch_processor.py**:
-```bash
-# 使用方法
-python translation_batch_processor.py <チャプター番号> [オプション]
-
-# 例
-python translation_batch_processor.py 01 --series="Project_Skylark"
-python translation_batch_processor.py 02 --validate-terminology
-```
-
-**機能**:
-- 構造化データの一括翻訳準備
-- 専門用語一貫性チェック
-- 翻訳品質検証
-- 自動ファイル配置
 
 ## 🔧 5. トラブルシューティング
 

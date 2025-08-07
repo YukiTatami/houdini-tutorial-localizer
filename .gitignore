@@ -164,3 +164,7 @@ test_output/
 debug_*/
 temp_*/
 scratch_*/
+
+# Claude Code settings (local configuration)
+.claude/
+.claude/settings.local.json

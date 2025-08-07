@@ -138,7 +138,7 @@ file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャ�
 7. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
 8. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
 9. Console出力の「===== COPY THE TEXT BELOW =====」以下のSRTデータを手動選択・コピー
-10. プレースホルダーファイル（transcript_placeholder_intro_en.srt）を直接開き、内容を削除してSRTデータを貼り付け
+10. プレースホルダーファイル（`tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_placeholder_{チャプター名}_en.srt`）を直接開き、内容を削除してSRTデータを貼り付け
 11. ⚠️ 重要: ファイルをUTF-8エンコーディングで保存（文字化け防止）
 12. 「SRTファイル保存完了」と報告
 

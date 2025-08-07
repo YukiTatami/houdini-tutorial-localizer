@@ -7,7 +7,7 @@
 
 ### 📁 フォルダ構造
 ```
-[SeriesName]/
+tutorials/[SeriesName]/
 ├── 01_raw_data/                       # 生データ（チャプター別）
 │   ├── chapter_01_introduction/
 │   │   ├── transcript_{videoId}_{title}_en.srt      # 英語字幕（原本）
@@ -65,8 +65,8 @@
   "series_info": {
     "name": "Project_Skylark_Bridges",
     "total_chapters": 6,
-    "created_date": "2024-01-01",
-    "last_updated": "2024-01-15",
+    "created_date": "auto-generated",
+    "last_updated": "auto-updated",
     "workflow_version": "2.0"
   },
   "chapters": [
@@ -77,18 +77,13 @@
       "url": "https://example.com/chapter1",
       "status": {
         "subtitle_extraction": "completed",
-        "subtitle_extraction_timestamp": "2024-01-15T10:30:00Z",
         "english_analysis": "completed",
-        "english_analysis_timestamp": "2024-01-15T10:45:00Z",
         "analysis_translation": "completed",
-        "analysis_translation_timestamp": "2024-01-15T11:00:00Z",
         "queue_translation": "completed",
-        "queue_translation_timestamp": "2024-01-15T11:05:00Z",
         "japanese_guide_generation": "completed",
-        "japanese_guide_generation_timestamp": "2024-01-15T11:10:00Z",
         "learning_guide_html": "completed"
       },
-      "completion_date": "2024-01-15T11:15:00Z",
+      "completion_date": "completed",
       "english_nodes_identified": [
         "Box SOP", "Add SOP", "Merge SOP"
       ],
@@ -100,30 +95,25 @@
       "title": "基本ロジック", 
       "url": "https://example.com/chapter2",
       "status": {
-        "subtitle_extraction": "completed",
-        "subtitle_extraction_timestamp": "2024-01-16T09:30:00Z",
-        "english_analysis": "completed",
-        "english_analysis_timestamp": "2024-01-16T10:15:00Z",
+        "subtitle_extraction": "pending",
+        "english_analysis": "pending",
         "analysis_translation": "pending",
-        "analysis_translation_timestamp": null,
         "queue_translation": "pending",
-        "queue_translation_timestamp": null,
         "japanese_guide_generation": "pending",
-        "japanese_guide_generation_timestamp": null,
         "learning_guide_html": "pending"
       },
-      "completion_date": null,
+      "completion_date": "pending",
       "english_nodes_identified": [],
       "processing_time_minutes": null
     }
   ],
   "series_glossary": {
     "houdini_nodes": ["Box SOP", "Add SOP", "Merge SOP"],
-    "ue5_terms": ["Blueprint", "Material", "Actor"],
+    "technical_terms": ["プロシージャルモデリング", "ジオメトリの散布"],
     "consistent_translations": {
       "Box SOP": "ボックスSOP",
-      "procedural": "プロシージャル",
-      "spline": "スプライン"
+      "Procedural Modeling": "プロシージャルモデリング",
+      "Spline": "スプライン"
     }
   }
 }
@@ -588,7 +578,7 @@ Output: Clean, translation-ready SRT file with improved segment structure.
 python srt_quality_fixer.py <入力SRTファイル> <出力SRTファイル> [オプション]
 
 # 例
-python srt_quality_fixer.py "01_raw_data/chapter_01_intro/transcript_1096045116_intro_en.srt" "01_raw_data/chapter_01_intro/transcript_1096045116_intro_en_fixed.srt"
+python srt_quality_fixer.py "tutorials/[シリーズ名]/01_raw_data/chapter_01_intro/transcript_1096045116_intro_en.srt" "tutorials/[シリーズ名]/01_raw_data/chapter_01_intro/transcript_1096045116_intro_en_fixed.srt"
 
 # オプション指定
 python srt_quality_fixer.py input_en.srt output_en_fixed.srt --target-duration 30 --optimize-for-translation
@@ -606,10 +596,10 @@ python srt_quality_fixer.py input_en.srt output_en_fixed.srt --target-duration 3
 python md_to_html_converter.py <MDファイルパス> [出力HTMLファイルパス]
 
 # 英語版学習ガイド
-python md_to_html_converter.py "02_english_analysis/chapter_01_guide_en.md"
+python md_to_html_converter.py "tutorials/[シリーズ名]/02_english_analysis/chapter_01_guide_en.md"
 
 # 日本語版学習ガイド
-python md_to_html_converter.py "03_learning_guide/chapters/chapter_01_学習ガイド.md"
+python md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_01_学習ガイド.md"
 ```
 
 **機能**:

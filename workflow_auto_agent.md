@@ -70,21 +70,20 @@ STEP 7: 次チャプター処理（STEP 2に戻る）
 ### STEP 1: 環境準備
 
 #### 1-1: シリーズ情報収集
-ユーザーに以下を確認：
+ユーザーに以下のみを確認：
 - チュートリアルURL（シリーズページ）
-- 処理順序（全チャプター一括 or 1チャプターずつ）
 
 #### 1-2: LS tool実行
 ```
-パラメータ: {"path": "カレントディレクトリの絶対パス"}
-目的: 既存シリーズフォルダの有無確認
+パラメータ: {"path": "tutorials/ディレクトリの絶対パス"}
+目的: tutorials/内の既存シリーズフォルダの有無確認
 ```
 
 #### 1-3: Write tool実行（並列可能）
 
 **1-3-1. シリーズフォルダ構造作成**
 ```
-[シリーズ名]/
+tutorials/[シリーズ名]/
 ├── 01_raw_data/
 │   ├── chapter_01_[チャプター名]/
 │   ├── chapter_02_[チャプター名]/
@@ -102,7 +101,7 @@ STEP 7: 次チャプター処理（STEP 2に戻る）
 ```
 
 **1-3-2. 進捗管理ファイル作成**
-- file_path: "04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
 - content: チャプター進捗管理データ（JSON形式）
 
 #### 1-4: Read tool で作成確認
@@ -113,14 +112,12 @@ STEP 7: 次チャプター処理（STEP 2に戻る）
 進捗管理ファイルを確認し、ユーザーに選択肢を提示：
 1. 次の未処理チャプターを自動選択
 2. 特定チャプターを指定
-3. 全チャプター一括処理
 
 #### 2-2: 選択チャプターの前提条件確認
 ユーザーに以下を確認：
-1. 対象チャプターURL: Vimeo埋め込みページ（SideFX等）
-2. 英語字幕の存在確認
-3. 動画再生・一時停止の動作確認
-4. 開発者ツール（F12）の利用可能性
+1. 英語字幕の存在確認
+2. 動画再生・一時停止の動作確認
+3. 開発者ツール（F12）の利用可能性
 
 ### STEP 3: JavaScript字幕取得実行
 
@@ -128,7 +125,7 @@ STEP 7: 次チャプター処理（STEP 2に戻る）
 
 #### 3-1: チャプター字幕ファイル保存準備
 次のファイルが存在するか確認し、なければ空の状態で作成しユーザーに告知
-file_path: "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en.srt"
+file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en.srt"
 
 #### 3-2: ユーザー実行指示
 以下の手順をユーザーに指示：
@@ -141,23 +138,23 @@ file_path: "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{vid
 7. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
 8. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
 9. Console出力の「===== COPY THE TEXT BELOW =====」以下のSRTデータを手動選択・コピー
-10. AIエージェントでファイル作成・編集時に貼り付け
+10. プレースホルダーファイル（transcript_placeholder_intro_en.srt）を直接開き、内容を削除してSRTデータを貼り付け
 11. ⚠️ 重要: ファイルをUTF-8エンコーディングで保存（文字化け防止）
+12. 「SRTファイル保存完了」と報告
 
 #### 3-3: 英語SRTデータの品質チェック
 ```
 **Python品質修正スクリプト使用（推奨）**:
 - Bash tool でsrt_quality_fixer.pyを実行：
-  python srt_quality_fixer.py "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en.srt" "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
+  python srt_quality_fixer.py "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en.srt" "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
 - 30秒セグメント化と文末統一が自動で実行される
 ```
 
 #### 3-4: 進捗管理更新
 ```
 Edit tool で進捗ファイル更新：
-- file_path: "04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
 - 該当チャプターの字幕取得ステータスを"completed"に更新
-- タイムスタンプ記録: "subtitle_extraction_timestamp"
 ```
 
 ### STEP 4: 英語ベース包括分析・学習ガイド作成
@@ -165,7 +162,7 @@ Edit tool で進捗ファイル更新：
 #### 4-1: 英語字幕読み込み
 ```
 Read tool で以下を実行：
-- file_path: "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
+- file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
 ```
 
 #### 4-2: 英語ベース包括分析実行
@@ -182,7 +179,7 @@ Read tool で以下を実行：
 #### 4-3: 分析結果保存
 ```
 Write tool で以下を実行：
-- file_path: "02_english_analysis/chapter_{章番号}_{チャプター名}_analysis.json"
+- file_path: "tutorials/[シリーズ名]/02_english_analysis/chapter_{章番号}_{チャプター名}_analysis.json"
 - content: 構造化された英語分析データ（JSON形式）
 ```
 
@@ -196,7 +193,7 @@ Write tool で以下を実行：
 - 文脈情報・タイムスタンプ情報
 
 Write tool で保存：
-- file_path: "05_translation_batch/chapter_{章番号}_translation_queue.json"
+- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue.json"
 
 ⚠️ 注意: guide_en.mdは作成しません（2段階翻訳フローでは不要）
 ```
@@ -204,9 +201,8 @@ Write tool で保存：
 #### 4-5: 進捗管理更新
 ```
 Edit tool で進捗ファイル更新：
-- file_path: "04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
 - 英語分析ステータスを"completed"に更新
-- タイムスタンプ記録: "english_analysis_timestamp"
 ```
 
 ### STEP 5: 2段階翻訳実行
@@ -214,7 +210,7 @@ Edit tool で進捗ファイル更新：
 #### 5-1: 第1段階翻訳（analysis.json翻訳）
 ```
 Read tool で以下を実行：
-- file_path: "02_english_analysis/chapter_{章番号}_analysis.json"
+- file_path: "tutorials/[シリーズ名]/02_english_analysis/chapter_{章番号}_analysis.json"
 
 共通情報ファイルの「第1段階翻訳プロンプト」を使用
 - analysis.json構造化データ翻訳
@@ -222,18 +218,17 @@ Read tool で以下を実行：
 - 専門用語一貫性確保
 
 Write tool で保存：
-- file_path: "05_translation_batch/chapter_{章番号}_analysis_jp.json"
+- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_analysis_jp.json"
 
 Edit tool で進捗更新：
-- file_path: "04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
 - analysis_translation: "completed"
-- タイムスタンプ記録: "analysis_translation_timestamp"
 ```
 
 #### 5-2: 第2段階翻訳（translation_queue.json翻訳）
 ```
 Read tool で以下を実行：
-- file_path: "05_translation_batch/chapter_{章番号}_translation_queue.json"
+- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue.json"
 
 共通情報ファイルの「第2段階翻訳プロンプト」を使用
 - translation_queue.json構造化データ翻訳
@@ -241,21 +236,20 @@ Read tool で以下を実行：
 - 文脈保持による高品質翻訳
 
 Write tool で保存：
-- file_path: "05_translation_batch/chapter_{章番号}_translation_queue_jp.json"
-- file_path: "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt"
+- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue_jp.json"
+- file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt"
 
 Edit tool で進捗更新：
-- file_path: "04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
 - queue_translation: "completed"
-- タイムスタンプ記録: "queue_translation_timestamp"
 ```
 
 #### 5-3: 第3段階（日本語学習ガイド生成）
 ```
 Read tool で翻訳済みデータ読み込み：
-- file_path: "05_translation_batch/chapter_{章番号}_analysis_jp.json"
-- file_path: "05_translation_batch/chapter_{章番号}_translation_queue_jp.json"
-- file_path: "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt"
+- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_analysis_jp.json"
+- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue_jp.json"
+- file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt"
 
 共通情報ファイルの「日本語ガイド生成プロンプト」を使用
 - 翻訳済み構造化データから日本語学習ガイド完全版作成
@@ -264,12 +258,11 @@ Read tool で翻訳済みデータ読み込み：
 - 自然な日本語技術文書スタイル
 
 Write tool で保存：
-- file_path: "03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+- file_path: "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
 
 Edit tool で進捗更新：
-- file_path: "04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
 - japanese_guide_generation: "completed"
-- タイムスタンプ記録: "japanese_guide_generation_timestamp"
 ```
 
 ### STEP 6: 日本語版統合・HTML生成
@@ -277,14 +270,14 @@ Edit tool で進捗更新：
 #### 6-1: 日本語学習ガイド(MD)読み込み
 ```
 Read tool で以下を実行：
-- file_path: "03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+- file_path: "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
 ```
 
 #### 6-2: HTML変換実行
 ```
 **Python変換スクリプト使用**:
 - Bash tool でmd_to_html_converter.pyを実行：
-  python md_to_html_converter.py "03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+  python md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
 - 自動でHTMLファイルが生成される
 - 全セクション一括処理、高速・高品質な出力
 ```
@@ -292,8 +285,8 @@ Read tool で以下を実行：
 #### 6-3: 一時ファイルクリーンアップ
 ```
 翻訳用一時ファイルの整理:
-- 05_translation_batch/ フォルダ内の翻訳済みファイル（*_jp.json）削除
-- 02_english_analysis/ フォルダ内：
+- tutorials/[シリーズ名]/05_translation_batch/ フォルダ内の翻訳済みファイル（*_jp.json）削除
+- tutorials/[シリーズ名]/02_english_analysis/ フォルダ内：
   - analysis.json は保持（シリーズ参照用）
   - guide_en.md は削除（2段階翻訳フローでは不要）
 
@@ -303,10 +296,10 @@ Read tool で以下を実行：
 #### 6-4: 進捗管理最終更新
 ```
 Edit tool で進捗ファイル更新：
-- file_path: "04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
 - 学習ガイド(HTML版)生成ステータスを"completed"に更新
-- チャプター全体完了フラグ設定
-- 次処理候補チャプターの設定
+- チャプター全体完了ステータスを"completed"に更新
+- 英語ノード情報とシリーズ用語集を更新
 ```
 
 ### STEP 7: 次チャプター処理・完了判定

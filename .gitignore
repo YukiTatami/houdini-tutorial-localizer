@@ -86,6 +86,9 @@ BLOG.md
 *UE*/
 *Unreal*/
 
+# Tutorial root folder (contains all tutorial projects)
+tutorials/
+
 # But keep example and sample data
 !example*/
 !sample*/
@@ -98,6 +101,10 @@ BLOG.md
 *translation_queue*.json
 *analysis_jp.json
 *_temp.json
+
+# Task tool generated files (temporary processing)
+translated_chapter_*.json
+translation_quality_check_*.md
 
 # Auto-generated files
 **/*_学習ガイド.html

@@ -575,13 +575,13 @@ Output: Clean, translation-ready SRT file with improved segment structure.
 **srt_quality_fixer.py**:
 ```bash
 # 使用方法
-python srt_quality_fixer.py <入力SRTファイル> <出力SRTファイル> [オプション]
+python scripts/srt_quality_fixer.py <入力SRTファイル> <出力SRTファイル> [オプション]
 
 # 例
-python srt_quality_fixer.py "tutorials/[シリーズ名]/01_raw_data/chapter_01_intro/transcript_1096045116_intro_en.srt" "tutorials/[シリーズ名]/01_raw_data/chapter_01_intro/transcript_1096045116_intro_en_fixed.srt"
+python scripts/srt_quality_fixer.py "tutorials/[シリーズ名]/01_raw_data/chapter_01_intro/transcript_1096045116_intro_en.srt" "tutorials/[シリーズ名]/01_raw_data/chapter_01_intro/transcript_1096045116_intro_en_fixed.srt"
 
 # オプション指定
-python srt_quality_fixer.py input_en.srt output_en_fixed.srt --target-duration 30 --optimize-for-translation
+python scripts/srt_quality_fixer.py input_en.srt output_en_fixed.srt --target-duration 30 --optimize-for-translation
 ```
 
 **機能**:
@@ -593,13 +593,13 @@ python srt_quality_fixer.py input_en.srt output_en_fixed.srt --target-duration 3
 **md_to_html_converter.py**:
 ```bash
 # 使用方法
-python md_to_html_converter.py <MDファイルパス> [出力HTMLファイルパス]
+python scripts/md_to_html_converter.py <MDファイルパス> [出力HTMLファイルパス]
 
 # 英語版学習ガイド
-python md_to_html_converter.py "tutorials/[シリーズ名]/02_english_analysis/chapter_01_guide_en.md"
+python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/02_english_analysis/chapter_01_guide_en.md"
 
 # 日本語版学習ガイド
-python md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_01_学習ガイド.md"
+python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_01_学習ガイド.md"
 ```
 
 **機能**:

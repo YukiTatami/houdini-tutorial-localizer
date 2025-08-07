@@ -146,7 +146,7 @@ file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャ�
 ```
 **Python品質修正スクリプト使用（推奨）**:
 - Bash tool でsrt_quality_fixer.pyを実行：
-  python srt_quality_fixer.py "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en.srt" "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
+  python scripts/srt_quality_fixer.py "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en.srt" "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
 - 30秒セグメント化と文末統一が自動で実行される
 ```
 
@@ -277,7 +277,7 @@ Read tool で以下を実行：
 ```
 **Python変換スクリプト使用**:
 - Bash tool でmd_to_html_converter.pyを実行：
-  python md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+  python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
 - 自動でHTMLファイルが生成される
 - 全セクション一括処理、高速・高品質な出力
 ```

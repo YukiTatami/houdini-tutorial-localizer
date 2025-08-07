@@ -70,3 +70,90 @@ coverage/
 
 # Project specific
 BLOG.md
+
+# ========================================
+# Houdini Tutorial Localizer Workflow
+# ========================================
+
+# Series data folders (individual tutorial projects)
+# Exclude all series folders but allow example/sample folders
+[A-Z]*_*_*/
+*_series/
+*_tutorial/
+*Series*/
+*Tutorial*/
+*Houdini*/
+*UE*/
+*Unreal*/
+
+# But keep example and sample data
+!example*/
+!sample*/
+!demo*/
+!test_*/
+
+# Translation and processing temporary files
+**/05_translation_batch/*.json
+**/05_translation_batch/*.temp
+*translation_queue*.json
+*analysis_jp.json
+*_temp.json
+
+# Auto-generated files
+**/*_学習ガイド.html
+**/*_guide_en.html
+**/*学習ガイド.html
+**/chapter_*_guide_en.md
+**/chapter_*_analysis.json
+
+# SRT files (subtitle data - typically large and project-specific)
+# Keep sample SRTs but exclude working files
+**/*.srt
+!**/sample*.srt
+!**/example*.srt
+!**/demo*.srt
+
+# Progress tracking (project-specific)
+**/04_progress/progress_tracker.json
+**/04_progress/*.backup
+progress_tracker_*.json
+
+# Raw data folders (typically large)
+**/01_raw_data/chapter_*/
+**/01_raw_data/*/transcript_*.srt
+
+# Large media files that might be accidentally added
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.wmv
+*.flv
+*.webm
+
+# Backup files
+*.backup
+*.bak
+*_backup.*
+*_old.*
+*.orig
+
+# Vimeo API related (if any API keys are used)
+*vimeo_config*
+*api_key*
+*credentials*
+
+# Editor and system files for Japanese/multilingual content
+.vscode/settings.json
+**/.DS_Store
+
+# Windows thumbnail cache files
+**/Thumbs.db
+**/ehthumbs.db
+**/Desktop.ini
+
+# Development and testing
+test_output/
+debug_*/
+temp_*/
+scratch_*/

@@ -133,11 +133,16 @@ file_path: "01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{vid
 #### 3-2: ユーザー実行指示
 以下の手順をユーザーに指示：
 1. 動画ページで字幕を有効化 → 一度再生 → 一時停止
-2. F12 → Console → scripts/vimeo_subtitle_extractor_step1.js の内容を実行
-3. 続いて scripts/vimeo_subtitle_extractor_step2.js の内容を実行（SRTデータがConsoleに表示される）
-4. Console表示された「===== COPY THE TEXT BELOW =====」以下のテキストを手動選択・コピー
-5. AIエージェントでファイル作成・編集時に貼り付け
-6. ⚠️ 重要: ファイルをUTF-8エンコーディングで保存（文字化け防止）
+2. F12 → Console を開く
+3. プロジェクトフォルダ内の `scripts/vimeo_subtitle_extractor_step1.js` をテキストエディタで開く
+4. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
+5. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
+6. プロジェクトフォルダ内の `scripts/vimeo_subtitle_extractor_step2.js` をテキストエディタで開く
+7. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
+8. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
+9. Console出力の「===== COPY THE TEXT BELOW =====」以下のSRTデータを手動選択・コピー
+10. AIエージェントでファイル作成・編集時に貼り付け
+11. ⚠️ 重要: ファイルをUTF-8エンコーディングで保存（文字化け防止）
 
 #### 3-3: 英語SRTデータの品質チェック
 ```

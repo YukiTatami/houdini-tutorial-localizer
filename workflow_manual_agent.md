@@ -138,10 +138,16 @@ Q3: 対象シリーズ情報：
 #### 3-1: チャプター字幕取得実行手順指示
 以下の手順をユーザーに詳細指示：
 1. 選択チャプターページで字幕を有効化 → 一度再生 → 一時停止
-2. F12 → Console → scripts/vimeo_subtitle_extractor_step1.js の内容を実行
-3. 続いて scripts/vimeo_subtitle_extractor_step2.js の内容を実行
-4. SRTデータをコピー → 該当チャプターフォルダのtranscript_{videoId}_{title}_en.srt に貼り付け・保存
-5. 進捗管理ファイル(progress_tracker.json)の字幕取得ステータス更新
+2. F12 → Console を開く
+3. プロジェクトフォルダ内の `scripts/vimeo_subtitle_extractor_step1.js` をテキストエディタで開く
+4. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
+5. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
+6. プロジェクトフォルダ内の `scripts/vimeo_subtitle_extractor_step2.js` をテキストエディタで開く
+7. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
+8. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
+9. Console出力の「===== COPY THE TEXT BELOW =====」以下のSRTデータをコピー
+10. 該当チャプターフォルダのtranscript_{videoId}_{title}_en.srt に貼り付け・保存
+11. 進捗管理ファイル(progress_tracker.json)の字幕取得ステータス更新
 
 #### 3-2: トラブルシューティング支援
 - セキュリティ警告への対処方法を指示

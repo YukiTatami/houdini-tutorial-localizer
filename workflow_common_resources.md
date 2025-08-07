@@ -141,20 +141,20 @@
 ### 📜 実行コード
 
 #### ステップ1: Player初期化・字幕収集
-**ファイル**: `scripts/vimeo_subtitle_extractor_step1.js`
-
-使用方法：
+**実行手順**：
 1. Vimeo埋め込みページで開発者ツール（F12）を開く
 2. Consoleタブに移動
-3. 上記ファイルの内容をコピー＆ペーストして実行
+3. プロジェクトフォルダ内の `scripts/vimeo_subtitle_extractor_step1.js` を開く
+4. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
+5. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
 
 #### ステップ2: SRT形式変換
-**ファイル**: `scripts/vimeo_subtitle_extractor_step2.js`
-
-使用方法：
-1. ステップ1の実行完了後
-2. 続けて上記ファイルの内容をコピー＆ペーストして実行
-3. 出力されたSRTデータをコピー
+**実行手順**：
+1. ステップ1の実行完了を確認
+2. プロジェクトフォルダ内の `scripts/vimeo_subtitle_extractor_step2.js` を開く
+3. ファイル内容を全選択してコピー（Ctrl+A → Ctrl+C）
+4. ブラウザのConsoleにペーストして実行（Ctrl+V → Enter）
+5. Console出力の「===== COPY THE TEXT BELOW =====」以下のSRTデータをコピー
 
 ## 📝 3. AIプロンプトテンプレート
 

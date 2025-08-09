@@ -19,7 +19,7 @@ from typing import List, Dict, Optional
 class SRTQualityFixer:
     """SRT品質修正を行うクラス"""
     
-    def __init__(self, target_duration: int = 30, completion_threshold: float = 0.7):
+    def __init__(self, target_duration: int = 40, completion_threshold: float = 0.8):
         """
         初期化
         
@@ -316,17 +316,17 @@ def main():
         epilog="""
 使用例:
   python srt_quality_fixer.py input.srt output.srt
-  python srt_quality_fixer.py input.srt output.srt --target-duration 25
-  python srt_quality_fixer.py input.srt output.srt --completion-threshold 0.8
+  python srt_quality_fixer.py input.srt output.srt --target-duration 30
+  python srt_quality_fixer.py input.srt output.srt --completion-threshold 0.9
         """
     )
     
     parser.add_argument('input_file', help='入力SRTファイルパス')
     parser.add_argument('output_file', help='出力SRTファイルパス')
-    parser.add_argument('--target-duration', type=int, default=30,
-                        help='目標セグメント時間（秒）（デフォルト: 30）')
-    parser.add_argument('--completion-threshold', type=float, default=0.7,
-                        help='文完結時の早期終了閾値（0.0-1.0）（デフォルト: 0.7）')
+    parser.add_argument('--target-duration', type=int, default=40,
+                        help='目標セグメント時間（秒）（デフォルト: 40）')
+    parser.add_argument('--completion-threshold', type=float, default=0.8,
+                        help='文完結時の早期終了閾値（0.0-1.0）（デフォルト: 0.8）')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='詳細な出力を表示')
     

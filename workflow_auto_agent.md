@@ -7,19 +7,19 @@
 
 **対象**: Write/Edit/Read/LS toolが使用可能なAIエージェント
 
-### 🎯 ワークフロー概要
-Houdiniチュートリアルシリーズ（複数動画・Vimeo埋め込み）から日本語学習支援資料を自動作成
+### 🎯 ワークフロー概要（新設計）
+Houdiniチュートリアルシリーズ（複数動画・Vimeo埋め込み）からシンプルな日本語学習資料を自動作成
 
 **成果物**:
 - 各チャプター用日本語翻訳字幕（SRT形式）
-- チャプター別動画同期型学習ガイド（MD + HTML形式、初出ノード詳細解説付き）
+- チャプター別動画同期型学習ガイド（MD + HTML形式、ノード名 + 日本語公式ドキュメントリンク付き）
 
-**所要時間**: 1チャプターあたり約15分（2段階翻訳による安全性向上）
+**所要時間**: 1チャプターあたり約8-10分（旧設計から30%短縮）
 
 **ワークフローの特徴**:
-- 🚀 **英語優先処理**: AIの英語理解力を最大活用
-- 📦 **2段階翻訳**: 構造化データ翻訳による高品質・安全性確保
-- ⚡ **効率的処理**: 重複処理の排除・段階的品質管理
+- 🚀 **簡素化処理**: ノード抽出 + 翻訳 + Python機械処理のみ
+- 📦 **Python自動化**: markdown_generator.pyによる完全機械化
+- ⚡ **高速処理**: 不要な複雑性を排除したストリームライン化
 
 ### STEP 0: 初期診断・ワークフロー開始
 
@@ -34,13 +34,13 @@ Houdiniチュートリアルシリーズ（複数動画・Vimeo埋め込み）�
 
 **🎯 このワークフローで実現すること**:
 ```
-📽️ 複数動画シリーズ → 📚 体系的日本語学習資料の自動生成
+📽️ 複数動画シリーズ → 📚 シンプルな日本語学習資料の自動生成
 
 成果物:
 ✅ 各チャプター日本語翻訳字幕（SRT形式）
-✅ チャプター別動画同期型学習ガイド（MD + HTML形式、初出ノード詳細解説付き）
+✅ チャプター別動画同期型学習ガイド（MD + HTML形式、ノード名 + 日本語公式ドキュメントリンク付き）
 
-所要時間: 1チャプターあたり約12分
+所要時間: 1チャプターあたり約8-10分
 ```
 
 **🔄 処理の流れ**:
@@ -48,9 +48,9 @@ Houdiniチュートリアルシリーズ（複数動画・Vimeo埋め込み）�
 STEP 1: 環境準備（シリーズ全体フォルダ構造自動作成）
 STEP 2: チャプター選択・字幕取得準備
 STEP 3: JavaScript字幕取得（英語）
-STEP 4: 英語ベース包括分析・構造化データ準備
-STEP 5: 2段階翻訳実行（構造化データ翻訳 + 日本語ガイド生成）
-STEP 6: 日本語版統合・HTML生成
+STEP 4: 英語ノード分析（簡素化）
+STEP 5: 翻訳・ノード情報生成
+STEP 6: Python機械処理・マークダウン生成・HTML変換
 STEP 7: 次チャプター処理（STEP 2に戻る）
 ```
 
@@ -88,16 +88,14 @@ tutorials/[シリーズ名]/
 │   ├── chapter_01_[チャプター名]/
 │   ├── chapter_02_[チャプター名]/
 │   └── ... (チャプター数分)
-├── 02_english_analysis/          # 英語分析専用
+├── 02_analysis_data/             # 分析・ノードデータ
 │   ├── chapter_01_analysis.json
-│   ├── chapter_01_guide_en.md
+│   ├── chapter_01_node_insertions.json
 │   └── ... (チャプター数分)
 ├── 03_learning_guide/            # 日本語版学習ガイド
 │   └── chapters/
-├── 04_progress/                  # 進捗管理
-│   └── progress_tracker.json
-└── 05_translation_batch/         # 翻訳用一時データ
-    └── translation_queue.json
+└── 04_progress/                  # 進捗管理
+    └── progress_tracker.json
 ```
 
 **1-3-2. 進捗管理ファイル作成**
@@ -154,10 +152,10 @@ file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャ�
 ```
 Edit tool で進捗ファイル更新：
 - file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
-- 該当チャプターの字幕取得ステータスを"completed"に更新
+- "subtitle_extraction": "completed" に更新
 ```
 
-### STEP 4: 英語ベース包括分析・学習ガイド作成
+### STEP 4: 英語ノード分析（簡素化）
 
 #### 4-1: 英語字幕読み込み
 ```
@@ -165,141 +163,130 @@ Read tool で以下を実行：
 - file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
 ```
 
-#### 4-2: 英語ベース包括分析実行
+#### 4-2: 英語ノード分析実行
 ```
-共通情報ファイルの「英語包括分析プロンプト」を使用
-- Houdiniノード抽出 & 初出タイムスタンプ特定（英語）
-- 技術的文脈の深い理解と分析（英語）
-- シリーズ全体でのノード関連性マッピング（英語）
-- チャプター学習目標・前提条件の明確化（英語）
+共通情報ファイルの「英語分析プロンプト（簡素化版）」を使用
+- Houdiniノード名の抽出
+- 各ノードの言及タイムスタンプ記録
+- 日本語公式ドキュメントリンク生成
 
-出力: 構造化JSON形式で分析結果を保存
+出力: 基本ノード情報のJSON形式で保存
 ```
 
 #### 4-3: 分析結果保存
 ```
 Write tool で以下を実行：
-- file_path: "tutorials/[シリーズ名]/02_english_analysis/chapter_{章番号}_{チャプター名}_analysis.json"
-- content: 構造化された英語分析データ（JSON形式）
+- file_path: "tutorials/[シリーズ名]/02_analysis_data/chapter_{章番号}_analysis.json"
+- content: ノード情報のJSONデータ
 ```
 
-#### 4-4: 翻訳用データ準備
-```
-翻訳効率化のため、英語分析結果から構造化データを作成：
-- 字幕セグメント一覧（英語）
-- 学習セグメント詳細（英語）
-- ノード解説データ（英語）
-- メタデータ・専門用語集（英語）
-- 文脈情報・タイムスタンプ情報
-
-Write tool で保存：
-- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue.json"
-
-⚠️ 注意: guide_en.mdは作成しません（2段階翻訳フローでは不要）
-```
-
-#### 4-5: 進捗管理更新
+#### 4-4: 進捗管理更新
 ```
 Edit tool で進捗ファイル更新：
 - file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
-- 英語分析ステータスを"completed"に更新
+- "english_analysis": "completed" に更新
 ```
 
-### STEP 5: 2段階翻訳実行
+### STEP 5: 翻訳・ノード情報生成
 
-#### 5-1: 第1段階翻訳（analysis.json翻訳）
-```
-Read tool で以下を実行：
-- file_path: "tutorials/[シリーズ名]/02_english_analysis/chapter_{章番号}_analysis.json"
-
-共通情報ファイルの「第1段階翻訳プロンプト」を使用
-- analysis.json構造化データ翻訳
-- Houdiniノード情報・技術概念の翻訳
-- 専門用語一貫性確保
-
-Write tool で保存：
-- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_analysis_jp.json"
-
-Edit tool で進捗更新：
-- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
-- analysis_translation: "completed"
-```
-
-#### 5-2: 第2段階翻訳（translation_queue.json翻訳）
+#### 5-1: 英語分析データ読み込み
 ```
 Read tool で以下を実行：
-- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue.json"
+- file_path: "tutorials/[シリーズ名]/02_analysis_data/chapter_{章番号}_analysis.json"
+- file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
+```
 
-共通情報ファイルの「第2段階翻訳プロンプト」を使用
-- translation_queue.json構造化データ翻訳
-- SRT字幕データ・学習セグメント翻訳
-- 文脈保持による高品質翻訳
+#### 5-2: 翻訳・ノード情報生成実行
+```
+共通情報ファイルの「翻訳・ノード情報生成プロンプト」を使用
+- 英語字幕の日本語翻訳
+- タイムスタンプとシーケンス番号の維持
+- ノード名の英語保持（例: "Box SOP"）
+- ノード挿入指示データ生成
 
-Write tool で保存：
-- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue_jp.json"
+出力構造:
+{
+  "subtitle_translation": "[日本語SRTフォーマットデータ]",
+  "node_insertions": [
+    {
+      "node_name": "Box SOP",
+      "doc_link_ja": "https://docs.sidefx.com/vex/lang/ja/sop/box",
+      "insert_after_timestamp": "00:02:15"
+    }
+  ]
+}
+```
+
+#### 5-3: 出力ファイル保存
+```
+Write tool で以下を保存：
 - file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt"
+  content: 日本語翻訳字幕
+- file_path: "tutorials/[シリーズ名]/02_analysis_data/chapter_{章番号}_node_insertions.json"
+  content: ノード挿入指示データ
+```
 
-Edit tool で進捗更新：
+#### 5-4: 進捗管理更新
+```
+Edit tool で進捗ファイル更新：
 - file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
-- queue_translation: "completed"
+- translation: "completed"
 ```
 
-#### 5-3: 第3段階（日本語学習ガイド生成）
+### STEP 6: Python機械処理・マークダウン生成
+
+#### 6-1: 入力ファイル確認
 ```
-Read tool で翻訳済みデータ読み込み：
-- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_analysis_jp.json"
-- file_path: "tutorials/[シリーズ名]/05_translation_batch/chapter_{章番号}_translation_queue_jp.json"
-- file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt"
-
-共通情報ファイルの「日本語ガイド生成プロンプト」を使用
-- 翻訳済み構造化データから日本語学習ガイド完全版作成
-- タイムスタンプ付き完全カバレッジ
-- 初出ノード詳細解説付き
-- 自然な日本語技術文書スタイル
-
-Write tool で保存：
-- file_path: "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
-
-Edit tool で進捗更新：
-- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
-- japanese_guide_generation: "completed"
+以下のファイルの存在を確認：
+- 日本語字幕: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt"
+- ノード挿入データ: "tutorials/[シリーズ名]/02_analysis_data/chapter_{章番号}_node_insertions.json"
 ```
 
-### STEP 6: 日本語版統合・HTML生成
-
-#### 6-1: 日本語学習ガイド(MD)読み込み
+#### 6-2: Python機械処理実行
 ```
-Read tool で以下を実行：
-- file_path: "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+**markdown_generator.pyを使用した自動マークダウン生成**:
+
+Bash tool で以下を実行：
+python scripts/markdown_generator.py \
+  --subtitle-file "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_jp.srt" \
+  --node-data "tutorials/[シリーズ名]/02_analysis_data/chapter_{章番号}_node_insertions.json" \
+  --output "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+
+**機能**:
+- 字幕データとノードデータの自動統合
+- タイムスタンプマッチング自動化
+- マークダウン形式自動生成
+- ノードリンク自動挿入
+
+**出力形式**:
+```markdown
+## 00:02:15
+「ここでBox SOPを使用してプレースホルダーを作成します」
+
+📝 **Box SOP** - [日本語公式ドキュメント](https://docs.sidefx.com/vex/lang/ja/sop/box)
+```
 ```
 
-#### 6-2: HTML変換実行
+#### 6-3: HTML変換実行
 ```
 **Python変換スクリプト使用**:
-- Bash tool でmd_to_html_converter.pyを実行：
-  python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+Bash tool でmd_to_html_converter.pyを実行：
+python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_{章番号}_{チャプター名}_学習ガイド.md"
+
 - 自動でHTMLファイルが生成される
-- 全セクション一括処理、高速・高品質な出力
-```
-
-#### 6-3: 一時ファイルクリーンアップ
-```
-翻訳用一時ファイルの整理:
-- tutorials/[シリーズ名]/05_translation_batch/ フォルダ内の翻訳済みファイル（*_jp.json）削除
-- tutorials/[シリーズ名]/02_english_analysis/ フォルダ内：
-  - analysis.json は保持（シリーズ参照用）
-  - guide_en.md は削除（2段階翻訳フローでは不要）
-
-⚠️ 注意: 既存のguide_en.mdファイルがある場合は削除推奨
+- 日本語レイアウト最適化
+- シンプルな出力
 ```
 
 #### 6-4: 進捗管理最終更新
 ```
 Edit tool で進捗ファイル更新：
 - file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
-- 学習ガイド(HTML版)生成ステータスを"completed"に更新
+- "markdown_generation": "completed" に更新
+- "html_conversion": "completed" に更新
+- "nodes_encountered": [チャプターで遇遇したノードリスト] に更新
+- "series_nodes_list": [シリーズ全体のノードリスト] に更新
 - チャプター全体完了ステータスを"completed"に更新
-- 英語ノード情報とシリーズ用語集を更新
 ```
 
 ### STEP 7: 次チャプター処理・完了判定
@@ -326,10 +313,10 @@ Edit tool で進捗ファイル更新：
 3. 必要に応じてバックアップファイルから復旧
 4. 共通情報ファイルのトラブルシューティングを参照
 
-## 📋 実行時の注意事項
+## 📋 実行時の注意事項（新設計）
 
 1. **共通情報参照**: プロンプト、コード等は workflow_common_resources.md を参照
-2. **英語優先処理**: STEP 4まで英語で処理し、STEP 5で一括翻訳
+2. **簡素化処理**: STEP 4でノード抽出、STEP 5で翻訳、STEP 6でPython機械処理
 3. **ユーザー連携**: STEP 3は必ずユーザー実行が必要
 4. **エラー対応**: 問題発生時は進捗ファイルで状態確認後、適切なステップから再開
 5. **品質管理**: 各ステップ完了時に必ず進捗更新とファイル保存確認
@@ -337,15 +324,16 @@ Edit tool で進捗ファイル更新：
 ## 📂 参照ファイル
 
 - **共通情報**: `workflow_common_resources.md`
-  - 英語分析プロンプト
-  - 一括翻訳プロンプト
+  - 英語分析プロンプト（簡素化版）
+  - 翻訳・ノード情報生成プロンプト
   - JavaScriptコード
   - フォルダ構造・命名規則
+  - Python自動化ツール
   - トラブルシューティング
 
-## 🚀 ワークフロー効果
+## 🚀 ワークフロー効果（新設計）
 
-- **処理時間**: 1チャプターあたり約12分
-- **翻訳品質**: 文脈保持による一貫性確保
-- **専門性**: 英語での深い技術分析
-- **保守性**: 構造化データによる管理
+- **処理時間**: 1チャプターあたり約8-10分（30%短縮）
+- **簡素化**: ノード名 + 日本語公式ドキュメントリンクのみ
+- **機械化**: Pythonスクリプトによる完全自動化
+- **保守性**: シンプルなファイル構造と管理

@@ -209,10 +209,20 @@ class MDtoHTMLConverter:
         info = {}
         idx = start_idx
         
-        while idx < len(lines) and lines[idx].strip():
-            if lines[idx].startswith('---'):
+        # 空行をスキップ
+        while idx < len(lines) and not lines[idx].strip():
+            idx += 1
+        
+        # リスト項目を処理
+        while idx < len(lines):
+            line = lines[idx].strip()
+            
+            # 終了条件
+            if line.startswith('---') or line.startswith('#') or not line:
                 break
-            match = re.match(r'^-\s+(.+?):\s+(.+)$', lines[idx])
+                
+            # リスト項目をパース: "- キー: 値"
+            match = re.match(r'^-\s+(.+?):\s+(.+)$', line)
             if match:
                 key, value = match.groups()
                 info[key] = value
@@ -261,17 +271,21 @@ class MDtoHTMLConverter:
         timestamp = timestamp_match.group(1)
         idx = start_idx + 1
         
-        # 翻訳文を取得
-        quote_text = ""
-        if idx < len(lines) and lines[idx].strip().startswith('「') and lines[idx].strip().endswith('」'):
-            quote_text = lines[idx].strip()
-            idx += 1
-        
         # 空行をスキップ
         while idx < len(lines) and not lines[idx].strip():
             idx += 1
         
-        # セクション内の全ての解説部分を取得
+        # 翻訳文を取得
+        quote_text = ""
+        if idx < len(lines) and lines[idx].strip().startswith('「') and lines[idx].strip().endswith('」'):
+            quote_text = lines[idx].strip()
+            idx += 1  # 翻訳文の行をスキップ
+            
+        # 翻訳文の後の空行もスキップ
+        while idx < len(lines) and not lines[idx].strip():
+            idx += 1
+        
+        # セクション内の解説部分を取得（翻訳文は既に処理済みなので除外される）
         explanation_lines = []
         while idx < len(lines):
             line = lines[idx].strip()

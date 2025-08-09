@@ -184,6 +184,17 @@ class MarkdownGenerator:
         # HH:MM:SS,mmm → HH:MM:SS
         return timestamp.split(',')[0]
     
+    def extract_node_type(self, doc_link):
+        """ドキュメントリンクからノード種別を抽出"""
+        try:
+            # URLから /sop/, /dop/, /rop/ などを抽出して大文字化
+            match = re.search(r'/([a-z]+)/[^/]+$', doc_link.lower())
+            if match:
+                return match.group(1).upper()
+        except:
+            pass
+        return ""
+    
     def find_nodes_for_segment(self, segment):
         """セグメントの時間範囲内または直後に挿入すべきノードを検索"""
         segment_start = segment['start_seconds']
@@ -244,8 +255,15 @@ class MarkdownGenerator:
                     node_name = node.get('node_name', 'Unknown Node')
                     doc_link = node.get('doc_link_ja', '#')
                     
-                    # ノード情報を挿入
-                    markdown_lines.append(f"**{node_name}** - [日本語公式ドキュメント]({doc_link})")
+                    # ノード種別を抽出してノード名に追加
+                    node_type = self.extract_node_type(doc_link)
+                    if node_type:
+                        full_node_name = f"{node_name} {node_type}"
+                    else:
+                        full_node_name = node_name
+                    
+                    # ノード情報を📝アイコン付きで挿入
+                    markdown_lines.append(f"📝 **[{full_node_name}]({doc_link})**")
                     markdown_lines.append("")
             
             markdown_lines.append("---")

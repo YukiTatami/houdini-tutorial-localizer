@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""
-Vimeo翻訳ワークフロー - MD→HTML変換ツール
-
-このスクリプトは、学習ガイドのMarkdownファイルを
-スタイル付きHTMLファイルに変換します。
-"""
+"""MD→HTML変換ツール"""
 
 import re
 import sys
@@ -13,10 +8,7 @@ from typing import List, Tuple, Dict
 
 
 class MDtoHTMLConverter:
-    """MarkdownからHTMLへの変換を行うクラス"""
-    
     def __init__(self):
-        """初期化"""
         self.html_template = self._get_html_template()
         self.content_sections = []
         self.title = ""
@@ -583,16 +575,8 @@ class MDtoHTMLConverter:
 
 
 def main():
-    """メイン処理"""
     if len(sys.argv) < 2:
-        print("=== Vimeo翻訳ワークフロー - MD→HTML変換ツール ===")
-        print("使用方法: python md_to_html_converter.py <MDファイルパス> [出力HTMLファイルパス]")
-        print("")
-        print("例:")
-        print("  python md_to_html_converter.py chapter_01_学習ガイド.md")
-        print("  python md_to_html_converter.py chapter_01_学習ガイド.md chapter_01_学習ガイド.html")
-        print("")
-        print("出力HTMLファイルパスを指定しない場合、.mdを.htmlに変更したファイル名で保存されます。")
+        print("使用方法: python md_to_html_converter.py <MDファイル> [出力HTMLファイル]")
         sys.exit(1)
     
     md_file_path = Path(sys.argv[1])
@@ -603,9 +587,8 @@ def main():
     else:
         html_file_path = md_file_path.with_suffix('.html')
     
-    # ファイル存在確認
     if not md_file_path.exists():
-        print(f"エラー: MDファイル '{md_file_path}' が見つかりません。")
+        print(f"エラー: ファイルが見つかりません: {md_file_path}")
         sys.exit(1)
     
     try:

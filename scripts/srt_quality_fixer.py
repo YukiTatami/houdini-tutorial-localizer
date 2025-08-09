@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Vimeo翻訳ワークフロー - SRT品質修正ツール
-
-このスクリプトは、英語字幕の品質を向上させるため、
-30秒セグメント化と文末統一を実行します。
-"""
+"""SRT品質修正ツール"""
 
 import re
 import sys
@@ -72,20 +67,10 @@ class SRTQualityFixer:
         except Exception as e:
             raise Exception(f"ファイルの読み込みに失敗しました: {e}")
         
-        # JavaScriptエスケープ文字を段階的に処理
-        print(f"[DEBUG] 処理前のコンテンツ長: {len(content)} 文字")
-        
-        # 二重エスケープを処理（\\\\n -> \\n）
+        # JavaScriptエスケープ文字を処理
         content = content.replace('\\\\n', '\\n')
-        
-        # 単一エスケープを実際の改行に変換（\\n -> \n）
         content = content.replace('\\n', '\n')
-        
-        # 文字列先頭・末尾の引用符を削除
         content = content.strip('\"').strip("'")
-        
-        print(f"[DEBUG] 処理後のコンテンツ長: {len(content)} 文字")
-        print(f"[DEBUG] 処理後の最初の100文字: {repr(content[:100])}")
         
         # セグメントを分割
         segments = []
@@ -269,12 +254,7 @@ class SRTQualityFixer:
     
     def print_stats(self) -> None:
         """統計情報を表示"""
-        print("\n[STATISTICS] 処理統計:")
-        print(f"   元のセグメント数: {self.stats['original_segments']}")
-        print(f"   修正後のセグメント数: {self.stats['fixed_segments']}")
-        print(f"   圧縮率: {(1 - self.stats['fixed_segments'] / self.stats['original_segments']) * 100:.1f}%")
-        print(f"   平均時間（修正前）: {self.stats['avg_original_duration']:.1f}秒")
-        print(f"   平均時間（修正後）: {self.stats['avg_fixed_duration']:.1f}秒")
+        print(f"処理完了: {self.stats['original_segments']} → {self.stats['fixed_segments']}セグメント")
     
     def fix_srt_quality(self, input_path: Path, output_path: Path) -> bool:
         """SRTファイルの品質修正を実行"""
@@ -299,7 +279,6 @@ class SRTQualityFixer:
             
             # 結果表示
             self.print_stats()
-            print(f"   処理時間: {self.stats['processing_time']:.1f}秒")
             
             return True
             

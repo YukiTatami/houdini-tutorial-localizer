@@ -1,21 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Houdiniチュートリアル学習ガイドマークダウン生成ツール
-=======================================================
-
-翻訳済み日本語字幕ファイル(.srt)とノード挿入データ(.json)から
-タイムスタンプ同期型の学習ガイドマークダウンを自動生成
-
-使用方法:
-    python markdown_generator.py --subtitle-file <字幕ファイル> --node-data <ノードデータファイル> --output <出力ファイル>
-
-例:
-    python markdown_generator.py \
-        --subtitle-file "tutorials/Project_Skylark_Bridges/01_raw_data/chapter_02_basic_logic/transcript_1096045116_basic_logic_jp.srt" \
-        --node-data "tutorials/Project_Skylark_Bridges/02_analysis_data/chapter_02_node_insertions.json" \
-        --output "tutorials/Project_Skylark_Bridges/03_learning_guide/chapters/chapter_02_basic_logic_学習ガイド.md"
-"""
+"""マークダウン学習ガイド生成ツール"""
 
 import argparse
 import json
@@ -31,7 +16,7 @@ class MarkdownGenerator:
         self.series_name = ""
         self.chapter_number = ""
         self.chapter_title = ""
-        self.total_chapters = 6  # デフォルト値
+        self.total_chapters = 6
         self.video_url = ""  # 動画URL（外部から設定可能）
         
     def extract_series_info(self, subtitle_file_path):
@@ -54,27 +39,19 @@ class MarkdownGenerator:
                         
                         # 日本語タイトルマッピング
                         title_mapping = {
-                            "introduction": "導入",
-                            "basiclogic": "基本ロジック", 
-                            "bridgestructure": "橋梁構造",
-                            "details": "詳細",
-                            "finishingtouches": "仕上げ",
-                            "finaltouches": "最終調整"
+                            "introduction": "導入", "basiclogic": "基本ロジック", "bridgestructure": "橋梁構造",
+                            "details": "詳細", "finishingtouches": "仕上げ", "finaltouches": "最終調整"
                         }
                         self.chapter_title = title_mapping.get(self.chapter_title, self.chapter_title)
             
             # シリーズ名からSideFX公式チュートリアルページのURLを設定
-            if not self.video_url and self.series_name:  # 外部から指定されていない場合のみ
+            if not self.video_url and self.series_name:
                 tutorial_url = self.generate_sidefx_tutorial_url(self.series_name)
                 if tutorial_url:
                     self.video_url = tutorial_url
-                    print(f"[INFO] SideFXチュートリアルURL生成: {self.video_url}")
                         
-            print(f"[INFO] シリーズ情報抽出完了: {self.series_name} - Chapter {self.chapter_number}: {self.chapter_title}")
             
         except Exception as e:
-            print(f"[ERROR] シリーズ情報抽出エラー: {e}")
-            # デフォルト値を設定
             self.series_name = "Project Skylark Bridges"
             self.chapter_number = "Unknown"
             self.chapter_title = "Unknown"
@@ -142,11 +119,9 @@ class MarkdownGenerator:
                 
                 self.subtitle_segments.append(segment)
                 
-            print(f"[OK] 字幕ファイル解析完了: {len(self.subtitle_segments)} セグメント")
             return True
             
         except Exception as e:
-            print(f"[ERROR] 字幕ファイル解析エラー: {e}")
             return False
     
     def parse_node_data(self, node_file_path):
@@ -164,11 +139,9 @@ class MarkdownGenerator:
                         timestamp = timestamp + ',000'
                     node['insert_seconds'] = self.timestamp_to_seconds(timestamp)
             
-            print(f"[OK] ノードデータ解析完了: {len(self.node_insertions)} ノード挿入ポイント")
             return True
             
         except Exception as e:
-            print(f"[ERROR] ノードデータ解析エラー: {e}")
             return False
     
     def timestamp_to_seconds(self, timestamp):
@@ -290,14 +263,11 @@ class MarkdownGenerator:
             with open(output_file_path, 'w', encoding='utf-8') as file:
                 file.write(markdown_content)
             
-            print(f"[OK] マークダウン生成完了: {output_file_path}")
-            print(f"[INFO] 総セグメント数: {len(self.subtitle_segments)}")
-            print(f"[INFO] 総ノード挿入数: {len(self.node_insertions)}")
+            print(f"マークダウン生成完了: {output_file_path}")
             
             return True
             
         except Exception as e:
-            print(f"[ERROR] マークダウン生成エラー: {e}")
             return False
 
 def main():

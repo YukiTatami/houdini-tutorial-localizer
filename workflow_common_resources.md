@@ -54,13 +54,13 @@ tutorials/[SeriesName]/
 | 日本語学習ガイド(HTML) | `chapter_{章番号}_{チャプター名}_学習ガイド.html` | `chapter_01_introduction_学習ガイド.html` |
 | 進捗管理ファイル | `progress_tracker.json` | `progress_tracker.json` |
 
-### 📄 進捗管理ファイル構造（簡素化版）
+### 📄 進捗管理ファイル構造
 ```json
 {
   "series_info": {
     "name": "Project_Skylark_Bridges",
     "total_chapters": 6,
-    "workflow_version": "3.0_simplified"
+    "workflow_version": "3.0"
   },
   "chapters": [
     {
@@ -142,7 +142,7 @@ tutorials/[SeriesName]/
 4. 日本語ガイド生成 → 全データ統合による完全版ガイド
 
 
-### 🔍 英語分析プロンプト（簡素化版）
+### 🔍 英語分析プロンプト
 ```
 Analyze this English Houdini tutorial subtitle for basic node identification.
 
@@ -318,7 +318,7 @@ Output: Clean, translation-ready SRT file with improved segment structure.
 
 ### 🐍 Python自動化スクリプト
 
-#### マークダウン生成スクリプト（新設計）
+#### マークダウン生成スクリプト
 **markdown_generator.py**:
 ```bash
 # 使用方法
@@ -384,7 +384,7 @@ python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_
 | **進捗管理** | JSON構文エラー | 進捗ファイルの構文検証・修復 | 定期的なバックアップ |
 | **英語分析** | ノード識別エラー | Houdini公式ドキュメントとの照合 | ノード名辞書の更新 |
 
-### 💡 6. 品質向上チェックリスト（簡素化版）
+### 💡 6. 品質向上チェックリスト
 
 #### 英語分析段階
 - [ ] Houdiniノード名の正確な抽出
@@ -409,6 +409,6 @@ python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_
 - [ ] リンク動作確認
 
 #### 全体品質
-- [ ] ファイル構造の簡素性確認
-- [ ] 進捗管理の基本確認
-- [ ] 処理時間の短縮確認（8-10分/チャプター）
+- [ ] ファイル構造の確認
+- [ ] 進捗管理の確認
+- [ ] 処理時間の確認（8-10分/チャプター）

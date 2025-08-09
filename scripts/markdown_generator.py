@@ -63,15 +63,12 @@ class MarkdownGenerator:
                         }
                         self.chapter_title = title_mapping.get(self.chapter_title, self.chapter_title)
             
-            # ファイル名からVimeo IDを抽出してデフォルト動画URLを設定
-            if not self.video_url:  # 外部から指定されていない場合のみ
-                filename = path.name
-                # transcript_1096045116_*.srt から Vimeo ID を抽出
-                vimeo_match = re.match(r'transcript_(\d+)_.*\.srt$', filename)
-                if vimeo_match:
-                    vimeo_id = vimeo_match.group(1)
-                    self.video_url = f"https://vimeo.com/{vimeo_id}"
-                    print(f"[INFO] Vimeo URL自動生成: {self.video_url}")
+            # シリーズ名からSideFX公式チュートリアルページのURLを設定
+            if not self.video_url and self.series_name:  # 外部から指定されていない場合のみ
+                tutorial_url = self.generate_sidefx_tutorial_url(self.series_name)
+                if tutorial_url:
+                    self.video_url = tutorial_url
+                    print(f"[INFO] SideFXチュートリアルURL生成: {self.video_url}")
                         
             print(f"[INFO] シリーズ情報抽出完了: {self.series_name} - Chapter {self.chapter_number}: {self.chapter_title}")
             
@@ -81,6 +78,15 @@ class MarkdownGenerator:
             self.series_name = "Project Skylark Bridges"
             self.chapter_number = "Unknown"
             self.chapter_title = "Unknown"
+    
+    def generate_sidefx_tutorial_url(self, series_name):
+        """シリーズ名からSideFX公式チュートリアルページのURLを生成"""
+        if not series_name:
+            return None
+        
+        # シリーズ名をURLフレンドリーな形式に変換
+        url_name = series_name.lower().replace(' ', '-').replace('_', '-')
+        return f"https://www.sidefx.com/ja/tutorials/{url_name}/"
     
     def get_video_duration(self):
         """最後の字幕セグメントから動画時間を取得"""

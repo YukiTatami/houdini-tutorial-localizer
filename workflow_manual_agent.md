@@ -85,7 +85,7 @@ STEP 7: 次チャプター処理（STEP 2に戻る）
 
 ```
 tutorials/[実際のシリーズ名]/
-├── raw_data/
+├── 01_raw_data/
 │   ├── chapter_01_[実際のチャプター1名]/
 │   │   ├── transcript_en.srt（空ファイル）
 │   │   └── transcript_jp.srt（空ファイル）
@@ -96,7 +96,7 @@ tutorials/[実際のシリーズ名]/
 │       ├── transcript_en.srt（空ファイル）
 │       └── transcript_jp.srt（空ファイル）
 │   （実際のチャプター数分のフォルダとファイル）
-└── learning_guide/
+└── 03_learning_guide/
     └── chapters/
 ```
 
@@ -104,7 +104,7 @@ tutorials/[実際のシリーズ名]/
 例えば「Project Skylark Bridges」の場合：
 ```
 tutorials/Project_Skylark_Bridges/
-├── raw_data/
+├── 01_raw_data/
 │   ├── chapter_01_basic_logic/
 │   │   ├── transcript_en.srt（空ファイル）
 │   │   └── transcript_jp.srt（空ファイル）
@@ -112,7 +112,7 @@ tutorials/Project_Skylark_Bridges/
 │   │   ├── transcript_en.srt（空ファイル）
 │   │   └── transcript_jp.srt（空ファイル）
 │   └── ...（全6チャプター分）
-└── learning_guide/
+└── 03_learning_guide/
     └── chapters/
 ```
 
@@ -185,7 +185,7 @@ tutorials/Project_Skylark_Bridges/
 2. **コマンド実行**:
    以下のテンプレートを実際のパスに置き換えて実行してください：
    ```
-   python scripts/srt_quality_fixer.py "tutorials/[実際のシリーズ名]/raw_data/chapter_[実際の章番号]_[実際のチャプター名]/transcript_en.srt" "tutorials/[実際のシリーズ名]/raw_data/chapter_[実際の章番号]_[実際のチャプター名]/transcript_en_fixed.srt"
+   python scripts/srt_quality_fixer.py "tutorials/[実際のシリーズ名]/01_raw_data/chapter_[実際の章番号]_[実際のチャプター名]/transcript_en.srt" "tutorials/[実際のシリーズ名]/01_raw_data/chapter_[実際の章番号]_[実際のチャプター名]/transcript_en_fixed.srt"
    ```
 
 3. **結果の報告**:
@@ -237,7 +237,7 @@ tutorials/Project_Skylark_Bridges/
 「以下に翻訳した日本語字幕を提供します。これをコピーしてファイルに保存してください。」
 
 **日本語字幕ファイルへの保存**:
-   - パス: `tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt`（STEP 1-2で作成済み）
+   - パス: `tutorials/[シリーズ名]/01_raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt`（STEP 1-2で作成済み）
    - 空のtranscript_jp.srtファイルを開く
    - ファイルの内容を全て選択（Ctrl+A）してAIエージェントが出力した翻訳済みSRTデータをコピー＆ペースト
    - UTF-8エンコーディングで保存（重要）
@@ -259,7 +259,7 @@ tutorials/Project_Skylark_Bridges/
 2. **実行コマンド**:
    - 存在する場合：以下のコマンドを正確に実行してください
    ```bash
-   python scripts/markdown_generator.py --subtitle-file "tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt" --output "tutorials/[シリーズ名]/learning_guide/chapters/chapter_[章番号]_[チャプター名]_学習ガイド.md"
+   python scripts/markdown_generator.py --subtitle-file "tutorials/[シリーズ名]/01_raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt" --output "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_[章番号]_[チャプター名]_学習ガイド.md"
    ```
    - 存在しない場合：「プロンプトのあるフォルダを確認してください」と指示
 
@@ -279,7 +279,7 @@ tutorials/Project_Skylark_Bridges/
 2. **実行コマンド**:
    - 存在する場合：以下のコマンドを実行してください
    ```bash
-   python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/learning_guide/chapters/chapter_[章番号]_[チャプター名]_学習ガイド.md"
+   python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_guide/chapters/chapter_[章番号]_[チャプター名]_学習ガイド.md"
    ```
    - 存在しない場合：「プロンプトのあるフォルダを確認してください」と指示
 

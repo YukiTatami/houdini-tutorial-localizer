@@ -81,15 +81,32 @@ STEP 7: 次チャプター処理（STEP 2に戻る）
 #### 1-2: 具体的フォルダ構造作成指示
 
 **📁 AIエージェントから具体的な作成指示**:
-前ステップで確認したチャプター情報を基に、以下の具体的なフォルダ構造をtutorialsフォルダ内に手動で作成してください：
+前ステップで確認したチャプター情報を基に、以下の具体的なフォルダ構造とファイルをtutorialsフォルダ内に手動で作成してください：
 
 ```
 tutorials/[実際のシリーズ名]/
 ├── raw_data/
 │   ├── chapter_01_[実際のチャプター1名]/
+│   │   └── transcript_en.srt（空ファイル）
 │   ├── chapter_02_[実際のチャプター2名]/
+│   │   └── transcript_en.srt（空ファイル）
 │   └── chapter_03_[実際のチャプター3名]/
-│   （実際のチャプター数分のフォルダ）
+│       └── transcript_en.srt（空ファイル）
+│   （実際のチャプター数分のフォルダとファイル）
+└── learning_guide/
+    └── chapters/
+```
+
+**AIエージェントの具体例提示**:
+例えば「Project Skylark Bridges」の場合：
+```
+tutorials/Project_Skylark_Bridges/
+├── raw_data/
+│   ├── chapter_01_basic_logic/
+│   │   └── transcript_en.srt（空ファイル）
+│   ├── chapter_02_piers_and_support_structures/
+│   │   └── transcript_en.srt（空ファイル）
+│   └── ...（全6チャプター分）
 └── learning_guide/
     └── chapters/
 ```
@@ -104,8 +121,10 @@ tutorials/[実際のシリーズ名]/
 2. 上記の2つのメインフォルダ（raw_data、learning_guide）を作成
 3. 各チャプター用のフォルダを`raw_data`内に作成（実際のチャプター名を使用）
 4. `learning_guide`内に`chapters`フォルダを作成
-5. **各チャプターフォルダ内に空のSRTファイルを作成**：
-   - 各`chapter_XX_[実際のチャプター名]/`フォルダ内に`transcript_en.srt`（空ファイル）を作成
+5. **各チャプターフォルダ内に空のSRTファイルを必ず作成**：
+   - 各`chapter_XX_[実際のチャプター名]/`フォルダ内に`transcript_en.srt`（空のテキストファイル）を作成
+   - 作成方法例：メモ帳で新規ファイルを作成し、何も入力せずに`transcript_en.srt`という名前で保存
+   - 全チャプター分のファイルを作成（後でJavaScriptの出力を貼り付けるための準備）
 
 #### 1-3: 進捗管理の初期化
 
@@ -142,7 +161,7 @@ tutorials/[実際のシリーズ名]/
 
 3. **Step 1 JavaScript実行**:
    - 「プロジェクトフォルダ内の `scripts/vimeo_subtitle_extractor_step1.js` ファイルは存在しますか？」
-   - 存在する場合：ファイルをメモ帳等で開き、全内容をコピーしてConsoleに貼り付け実行を指示
+   - 存在する場合：ファイルをメモ帳等で開き、全内容をコピーしてConsoleに貼り付け実行と字幕取得処理の完了まで待機を指示
    - 存在しない場合：「プロンプトがあるフォルダ内を確認してください」と報告
 
 4. **Step 2 JavaScript実行**:
@@ -152,8 +171,9 @@ tutorials/[実際のシリーズ名]/
 
 5. **SRTデータ保存**:
    - Console出力の「===== COPY THE TEXT BELOW =====」以下をすべて選択・コピー
-   - 該当チャプターフォルダの`transcript_en.srt`ファイルを開く
-   - 内容を貼り付けて保存（UTF-8エンコーディング推奨）
+   - 該当チャプターフォルダの`transcript_en.srt`ファイルを開く（STEP 1-2で作成済み）
+   - ファイルの内容を全て選択（Ctrl+A）して削除し、コピーした内容を貼り付け
+   - UTF-8エンコーディングで保存（重要）
 
 6. **完了報告**:
    「SRTファイルの保存が完了しました」と報告してください。

@@ -87,11 +87,14 @@ STEP 7: 次チャプター処理（STEP 2に戻る）
 tutorials/[実際のシリーズ名]/
 ├── raw_data/
 │   ├── chapter_01_[実際のチャプター1名]/
-│   │   └── transcript_en.srt（空ファイル）
+│   │   ├── transcript_en.srt（空ファイル）
+│   │   └── transcript_jp.srt（空ファイル）
 │   ├── chapter_02_[実際のチャプター2名]/
-│   │   └── transcript_en.srt（空ファイル）
+│   │   ├── transcript_en.srt（空ファイル）
+│   │   └── transcript_jp.srt（空ファイル）
 │   └── chapter_03_[実際のチャプター3名]/
-│       └── transcript_en.srt（空ファイル）
+│       ├── transcript_en.srt（空ファイル）
+│       └── transcript_jp.srt（空ファイル）
 │   （実際のチャプター数分のフォルダとファイル）
 └── learning_guide/
     └── chapters/
@@ -103,9 +106,11 @@ tutorials/[実際のシリーズ名]/
 tutorials/Project_Skylark_Bridges/
 ├── raw_data/
 │   ├── chapter_01_basic_logic/
-│   │   └── transcript_en.srt（空ファイル）
+│   │   ├── transcript_en.srt（空ファイル）
+│   │   └── transcript_jp.srt（空ファイル）
 │   ├── chapter_02_piers_and_support_structures/
-│   │   └── transcript_en.srt（空ファイル）
+│   │   ├── transcript_en.srt（空ファイル）
+│   │   └── transcript_jp.srt（空ファイル）
 │   └── ...（全6チャプター分）
 └── learning_guide/
     └── chapters/
@@ -121,10 +126,12 @@ tutorials/Project_Skylark_Bridges/
 2. 上記の2つのメインフォルダ（raw_data、learning_guide）を作成
 3. 各チャプター用のフォルダを`raw_data`内に作成（実際のチャプター名を使用）
 4. `learning_guide`内に`chapters`フォルダを作成
-5. **各チャプターフォルダ内に空のSRTファイルを必ず作成**：
-   - 各`chapter_XX_[実際のチャプター名]/`フォルダ内に`transcript_en.srt`（空のテキストファイル）を作成
-   - 作成方法例：メモ帳で新規ファイルを作成し、何も入力せずに`transcript_en.srt`という名前で保存
-   - 全チャプター分のファイルを作成（後でJavaScriptの出力を貼り付けるための準備）
+5. **各チャプターフォルダ内に空のSRTファイルを2つ必ず作成**：
+   - 各`chapter_XX_[実際のチャプター名]/`フォルダ内に以下の2つの空ファイルを作成：
+     - `transcript_en.srt`（英語字幕用、空のテキストファイル）
+     - `transcript_jp.srt`（日本語字幕用、空のテキストファイル）
+   - 作成方法例：メモ帳で新規ファイルを作成し、何も入力せずに各ファイル名で保存
+   - 全チャプター分のファイルを作成（後でデータを貼り付けるための準備）
 
 #### 1-3: 進捗管理の初期化
 
@@ -251,19 +258,11 @@ tutorials/Project_Skylark_Bridges/
 **AIエージェントからの指示**:
 「以下に翻訳した日本語字幕を提供します。これをコピーしてファイルに保存してください。」
 
-1. **日本語字幕ファイル作成**:
-   - パス: `tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt`
-   - AIエージェントが出力した翻訳済みSRTデータをコピー＆ペースト
-   - UTF-8エンコーディングで保存
-
-2. **空のノードデータファイル作成**（手動ワークフロー用の簡易版）:
-   - パス: `tutorials/[シリーズ名]/learning_guide/chapters/chapter_[章番号]_[チャプター名]_学習ガイド.md`
-   - 以下の内容で作成：
-   ```json
-   {
-     "node_insertions": []
-   }
-   ```
+**日本語字幕ファイルへの保存**:
+   - パス: `tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt`（STEP 1-2で作成済み）
+   - 空のtranscript_jp.srtファイルを開く
+   - ファイルの内容を全て選択（Ctrl+A）してAIエージェントが出力した翻訳済みSRTデータをコピー＆ペースト
+   - UTF-8エンコーディングで保存（重要）
 
 #### 5-3: 進捗確認
 

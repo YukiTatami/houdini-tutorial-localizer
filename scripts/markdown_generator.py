@@ -285,8 +285,8 @@ def main():
     
     parser.add_argument(
         '--node-data', 
-        required=True,
-        help='ノード挿入データファイル (.json)'
+        required=False,
+        help='ノード挿入データファイル (.json) - オプション'
     )
     
     parser.add_argument(
@@ -305,19 +305,25 @@ def main():
     
     # ファイル存在確認
     subtitle_file = Path(args.subtitle_file)
-    node_file = Path(args.node_data)
     
     if not subtitle_file.exists():
         print(f"[ERROR] 字幕ファイルが見つかりません: {subtitle_file}")
         sys.exit(1)
     
-    if not node_file.exists():
-        print(f"[ERROR] ノードデータファイルが見つかりません: {node_file}")
-        sys.exit(1)
+    # node-dataはオプションなので指定された場合のみ確認
+    node_file = None
+    if args.node_data:
+        node_file = Path(args.node_data)
+        if not node_file.exists():
+            print(f"[ERROR] ノードデータファイルが見つかりません: {node_file}")
+            sys.exit(1)
     
     print("[START] マークダウン生成開始...")
     print(f"[INPUT] 字幕ファイル: {subtitle_file}")
-    print(f"[INPUT] ノードデータ: {node_file}")
+    if node_file:
+        print(f"[INPUT] ノードデータ: {node_file}")
+    else:
+        print("[INPUT] ノードデータ: なし（シンプルモード）")
     print(f"[OUTPUT] 出力ファイル: {args.output}")
     print()
     
@@ -335,7 +341,8 @@ def main():
     if not generator.parse_srt_file(subtitle_file):
         sys.exit(1)
     
-    if not generator.parse_node_data(node_file):
+    # ノードデータが指定された場合のみ解析
+    if node_file and not generator.parse_node_data(node_file):
         sys.exit(1)
     
     # マークダウン生成

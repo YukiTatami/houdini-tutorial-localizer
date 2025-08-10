@@ -283,16 +283,10 @@ tutorials/Project_Skylark_Bridges/
 1. **スクリプトの存在確認**:
    「`scripts/markdown_generator.py` ファイルは存在しますか？」
 
-2. **空のJSONファイル作成**:
-   手動ワークフロー用の空のノードデータファイルを作成：
-   - パス: `tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/node_data.json`
-   - 内容: `{"node_insertions": []}`（空のJSON）
-   - UTF-8エンコーディングで保存
-
-3. **実行コマンド**:
+2. **実行コマンド**:
    - 存在する場合：以下のコマンドを正確に実行してください
    ```bash
-   python scripts/markdown_generator.py --subtitle-file "tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt" --node-data "tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/node_data.json" --output "tutorials/[シリーズ名]/learning_guide/chapters/chapter_[章番号]_[チャプター名]_学習ガイド.md"
+   python scripts/markdown_generator.py --subtitle-file "tutorials/[シリーズ名]/raw_data/chapter_[章番号]_[チャプター名]/transcript_jp.srt" --output "tutorials/[シリーズ名]/learning_guide/chapters/chapter_[章番号]_[チャプター名]_学習ガイド.md"
    ```
    - 存在しない場合：「スクリプトが見つかりません。代替手段を教えてください」と報告
 

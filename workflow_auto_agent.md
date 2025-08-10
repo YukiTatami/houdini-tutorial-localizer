@@ -94,12 +94,11 @@ tutorials/[シリーズ名]/
 │   └── ... (チャプター数分)
 ├── 03_learning_guide/            # 日本語版学習ガイド
 │   └── chapters/
-└── 04_progress/                  # 進捗管理
-    └── progress_tracker.json
+└── progress_tracker.json         # 進捗管理ファイル（シリーズ直下）
 ```
 
 **1-3-2. 進捗管理ファイル作成**
-- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/progress_tracker.json"
 - content: チャプター進捗管理データ（JSON形式）
 
 #### 1-4: Read tool で作成確認
@@ -151,7 +150,7 @@ file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャ�
 #### 3-4: 進捗管理更新
 ```
 Edit tool で進捗ファイル更新：
-- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/progress_tracker.json"
 - "subtitle_extraction": "completed" に更新
 ```
 
@@ -183,7 +182,7 @@ Write tool で以下を実行：
 #### 4-4: 進捗管理更新
 ```
 Edit tool で進捗ファイル更新：
-- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/progress_tracker.json"
 - "english_analysis": "completed" に更新
 ```
 
@@ -229,7 +228,7 @@ Write tool で以下を保存：
 #### 5-4: 進捗管理更新
 ```
 Edit tool で進捗ファイル更新：
-- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/progress_tracker.json"
 - translation: "completed"
 ```
 
@@ -281,7 +280,7 @@ python scripts/md_to_html_converter.py "tutorials/[シリーズ名]/03_learning_
 #### 6-4: 進捗管理最終更新
 ```
 Edit tool で進捗ファイル更新：
-- file_path: "tutorials/[シリーズ名]/04_progress/progress_tracker.json"
+- file_path: "tutorials/[シリーズ名]/progress_tracker.json"
 - "markdown_generation": "completed" に更新
 - "html_conversion": "completed" に更新
 - "nodes_encountered": [チャプターで遇遇したノードリスト] に更新

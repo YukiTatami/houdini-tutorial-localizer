@@ -31,8 +31,7 @@ tutorials/[SeriesName]/
 │       ├── chapter_02_basic_logic_学習ガイド.md
 │       ├── chapter_02_basic_logic_学習ガイド.html
 │       └── ... (チャプター数分、MD + HTML)
-└── 04_progress/                       # 進捗管理
-    └── progress_tracker.json          # シリーズ進捗ファイル
+└── progress_tracker.json              # シリーズ進捗ファイル（シリーズ直下）
 ```
 
 ### 📝 命名規則
@@ -52,7 +51,7 @@ tutorials/[SeriesName]/
 | ノード挿入指示 | `chapter_{章番号}_node_insertions.json` | `chapter_01_node_insertions.json` |
 | 日本語学習ガイド(MD) | `chapter_{章番号}_{チャプター名}_学習ガイド.md` | `chapter_01_introduction_学習ガイド.md` |
 | 日本語学習ガイド(HTML) | `chapter_{章番号}_{チャプター名}_学習ガイド.html` | `chapter_01_introduction_学習ガイド.html` |
-| 進捗管理ファイル | `progress_tracker.json` | `progress_tracker.json` |
+| 進捗管理ファイル | `progress_tracker.json` | `progress_tracker.json`（シリーズ直下） |
 
 ### 📄 進捗管理ファイル構造
 ```json

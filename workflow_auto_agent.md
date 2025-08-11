@@ -139,9 +139,9 @@ file_path: "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャ�
 11. ⚠️ 重要: ファイルをUTF-8エンコーディングで保存（文字化け防止）
 12. 「SRTファイル保存完了」と報告
 
-#### 3-3: 英語SRTデータの品質チェック
+#### 3-3: 英語SRTデータの品質修正
 ```
-**Python品質修正スクリプト使用（推奨）**:
+**必須-Python品質修正スクリプト使用(ファイル読み込み不要)**:
 - Bash tool でsrt_quality_fixer.pyを実行：
   python scripts/srt_quality_fixer.py "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en.srt" "tutorials/[シリーズ名]/01_raw_data/chapter_{章番号}_{チャプター名}/transcript_{videoId}_{title}_en_fixed.srt"
 - 30秒セグメント化と文末統一が自動で実行される

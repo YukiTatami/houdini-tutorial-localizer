@@ -128,7 +128,9 @@ class MarkdownGenerator:
         """ノードデータJSONファイルをパース"""
         try:
             with open(node_file_path, 'r', encoding='utf-8') as file:
-                self.node_insertions = json.load(file)
+                data = json.load(file)
+                # node_insertions キーから配列を取得
+                self.node_insertions = data.get('node_insertions', [])
             
             # タイムスタンプを秒に変換して追加
             for node in self.node_insertions:
@@ -174,21 +176,31 @@ class MarkdownGenerator:
             pass
         return ""
     
-    def find_nodes_for_segment(self, segment):
-        """セグメントの時間範囲内または直後に挿入すべきノードを検索"""
-        segment_start = segment['start_seconds']
-        segment_end = segment['end_seconds']
+    def find_best_segment_for_node(self, node_insert_time):
+        """ノード挿入タイミングに最も近いセグメントのインデックスを検索"""
+        best_segment_idx = None
+        min_distance = float('inf')
         
-        matching_nodes = []
-        
-        for node in self.node_insertions:
-            node_insert_time = node.get('insert_seconds', 0)
+        for idx, segment in enumerate(self.subtitle_segments):
+            segment_start = segment['start_seconds']
+            segment_end = segment['end_seconds']
             
-            # セグメント範囲内または直後（5秒以内）にノード挿入タイミングがある場合
-            if segment_start <= node_insert_time <= segment_end + 5:
-                matching_nodes.append(node)
+            # ノードの挿入タイミングがセグメント開始時刻と一致する場合、このセグメントに配置
+            if abs(node_insert_time - segment_start) < 0.1:  # 0.1秒の許容誤差
+                return idx
+            
+            # セグメント範囲内の場合（終了時刻は含まない）
+            if segment_start <= node_insert_time < segment_end:
+                return idx
+            
+            # セグメント終了時刻からの距離を計算（後続セグメントの場合）
+            if node_insert_time >= segment_end:
+                distance = node_insert_time - segment_end
+                if distance < min_distance:
+                    min_distance = distance
+                    best_segment_idx = idx
         
-        return matching_nodes
+        return best_segment_idx
     
     def generate_markdown_content(self):
         """マークダウンコンテンツ生成"""
@@ -214,8 +226,19 @@ class MarkdownGenerator:
         markdown_lines.append("---")
         markdown_lines.append("")
         
+        # 各ノードに対して最適なセグメントを事前計算
+        nodes_by_segment = {}
+        for node in self.node_insertions:
+            node_insert_time = node.get('insert_seconds', 0)
+            best_segment_idx = self.find_best_segment_for_node(node_insert_time)
+            
+            if best_segment_idx is not None:
+                if best_segment_idx not in nodes_by_segment:
+                    nodes_by_segment[best_segment_idx] = []
+                nodes_by_segment[best_segment_idx].append(node)
+        
         # 各字幕セグメントを処理
-        for segment in self.subtitle_segments:
+        for idx, segment in enumerate(self.subtitle_segments):
             # セグメントタイトル（タイムスタンプ）
             timestamp_display = self.format_timestamp_for_markdown(segment['start_time'])
             markdown_lines.append(f"## {timestamp_display}")
@@ -226,11 +249,9 @@ class MarkdownGenerator:
             markdown_lines.append(f'「{subtitle_text}」')
             markdown_lines.append("")
             
-            # このセグメントに関連するノードを検索
-            related_nodes = self.find_nodes_for_segment(segment)
-            
-            if related_nodes:
-                for node in related_nodes:
+            # このセグメントに割り当てられたノードを挿入
+            if idx in nodes_by_segment:
+                for node in nodes_by_segment[idx]:
                     node_name = node.get('node_name', 'Unknown Node')
                     doc_link = node.get('doc_link_ja', '#')
                     

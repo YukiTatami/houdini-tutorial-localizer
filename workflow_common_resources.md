@@ -261,16 +261,13 @@ Requirements:
    - Specify exact timestamp for insertion
 
 Output Structure:
-{
-  "subtitle_translation": "[Complete SRT format with Japanese text]",
-  "node_insertions": [
-    {
-      "node_name": "Box SOP",
-      "doc_link_ja": "https://www.sidefx.com/ja/docs/houdini/nodes/sop/box.html",
-      "insert_after_timestamp": "00:02:15"
-    }
-  ]
-}
+[
+  {
+    "node_name": "Box SOP",
+    "doc_link_ja": "https://www.sidefx.com/ja/docs/houdini/nodes/sop/box.html",
+    "insert_after_timestamp": "00:02:15"
+  }
+]
 
 [Provide analysis.json and English SRT content]
 ```

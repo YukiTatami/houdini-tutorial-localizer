@@ -257,7 +257,7 @@ Requirements:
 
 2. **Node Insertion Data Generation**:
    - For each node mentioned in subtitles, create insertion instruction
-   - Generate Japanese official documentation links
+   - Generate Japanese official documentation links in format: https://www.sidefx.com/ja/docs/houdini/nodes/{type}/{nodename}.html
    - Specify exact timestamp for insertion
 
 Output Structure:
@@ -266,7 +266,7 @@ Output Structure:
   "node_insertions": [
     {
       "node_name": "Box SOP",
-      "doc_link_ja": "https://docs.sidefx.com/vex/lang/ja/sop/box",
+      "doc_link_ja": "https://www.sidefx.com/ja/docs/houdini/nodes/sop/box.html",
       "insert_after_timestamp": "00:02:15"
     }
   ]

@@ -128,9 +128,7 @@ class MarkdownGenerator:
         """ノードデータJSONファイルをパース"""
         try:
             with open(node_file_path, 'r', encoding='utf-8') as file:
-                data = json.load(file)
-                # node_insertions キーから配列を取得
-                self.node_insertions = data.get('node_insertions', [])
+                self.node_insertions = json.load(file)
             
             # タイムスタンプを秒に変換して追加
             for node in self.node_insertions:

@@ -163,16 +163,6 @@ class MarkdownGenerator:
         # HH:MM:SS,mmm → HH:MM:SS
         return timestamp.split(',')[0]
     
-    def extract_node_type(self, doc_link):
-        """ドキュメントリンクからノード種別を抽出"""
-        try:
-            # URLから /sop/, /dop/, /rop/ などを抽出して大文字化
-            match = re.search(r'/([a-z]+)/[^/]+$', doc_link.lower())
-            if match:
-                return match.group(1).upper()
-        except:
-            pass
-        return ""
     
     def find_best_segment_for_node(self, node_insert_time):
         """ノード挿入タイミングに最も近いセグメントのインデックスを検索"""
@@ -253,15 +243,8 @@ class MarkdownGenerator:
                     node_name = node.get('node_name', 'Unknown Node')
                     doc_link = node.get('doc_link_ja', '#')
                     
-                    # ノード種別を抽出してノード名に追加
-                    node_type = self.extract_node_type(doc_link)
-                    if node_type:
-                        full_node_name = f"{node_name} {node_type}"
-                    else:
-                        full_node_name = node_name
-                    
                     # ノード情報を📝アイコン付きで挿入
-                    markdown_lines.append(f"📝 **[{full_node_name}]({doc_link})**")
+                    markdown_lines.append(f"📝 **[{node_name}]({doc_link})**")
                     markdown_lines.append("")
             
             markdown_lines.append("---")

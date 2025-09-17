@@ -184,20 +184,30 @@ class MarkdownGenerator:
             segment_start = segment['start_seconds']
             segment_end = segment['end_seconds']
             
-            # ノードの挿入タイミングがセグメント開始時刻と一致する場合、このセグメントに配置
+            # 1. 完全一致または非常に近い場合（優先度最高）
             if abs(node_insert_time - segment_start) < 0.1:  # 0.1秒の許容誤差
                 return idx
             
-            # セグメント範囲内の場合（終了時刻は含まない）
+            # 2. セグメント範囲内の場合（優先度高）
             if segment_start <= node_insert_time < segment_end:
                 return idx
             
-            # セグメント終了時刻からの距離を計算（後続セグメントの場合）
-            if node_insert_time >= segment_end:
+        # 3. 範囲外の場合、最も近いセグメントを距離で判定
+        for idx, segment in enumerate(self.subtitle_segments):
+            segment_start = segment['start_seconds']
+            segment_end = segment['end_seconds']
+            
+            # 距離を計算（セグメントの境界からの最短距離）
+            if node_insert_time < segment_start:
+                distance = segment_start - node_insert_time
+            elif node_insert_time >= segment_end:
                 distance = node_insert_time - segment_end
-                if distance < min_distance:
-                    min_distance = distance
-                    best_segment_idx = idx
+            else:
+                continue  # 既に範囲内チェックで処理済み
+
+            if distance < min_distance:
+                min_distance = distance
+                best_segment_idx = idx
         
         return best_segment_idx
     

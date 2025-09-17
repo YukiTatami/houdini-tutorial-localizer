@@ -16,7 +16,7 @@ class MarkdownGenerator:
         self.series_name = ""
         self.chapter_number = ""
         self.chapter_title = ""
-        self.total_chapters = 6
+        self.total_chapters = None  # 動的に設定される
         self.video_url = ""  # 動画URL（外部から設定可能）
         
     def extract_series_info(self, subtitle_file_path):
@@ -43,6 +43,17 @@ class MarkdownGenerator:
                             "details": "詳細", "finishingtouches": "仕上げ", "finaltouches": "最終調整"
                         }
                         self.chapter_title = title_mapping.get(self.chapter_title, self.chapter_title)
+
+            # progress_tracker.jsonから総チャプター数を取得
+            if self.series_name:
+                progress_file = path.parents[2] / "progress_tracker.json"
+                if progress_file.exists():
+                    try:
+                        with open(progress_file, 'r', encoding='utf-8') as f:
+                            progress_data = json.load(f)
+                            self.total_chapters = progress_data.get('series_info', {}).get('total_chapters')
+                    except:
+                        pass
             
             # シリーズ名からSideFX公式チュートリアルページのURLを設定
             if not self.video_url and self.series_name:
@@ -201,8 +212,11 @@ class MarkdownGenerator:
         markdown_lines.append("**シリーズ情報**:")
         markdown_lines.append("")
         markdown_lines.append(f"- シリーズ: {self.series_name}")
-        markdown_lines.append(f"- チャプター: {self.chapter_number} / {self.total_chapters}")
         
+        if self.total_chapters:
+            markdown_lines.append(f"- チャプター: {self.chapter_number} / {self.total_chapters}")
+        else:
+            markdown_lines.append(f"- チャプター: {self.chapter_number}")        
         # 動画URLの設定（リンクまたは単純テキスト）
         if self.video_url:
             markdown_lines.append(f"- 動画URL: [{self.series_name}]({self.video_url})")
